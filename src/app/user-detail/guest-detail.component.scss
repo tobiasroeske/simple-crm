@@ -1,0 +1,64 @@
+.guest-detail-header {
+    background-color: rgb(194, 24, 91);
+    color: white;
+}
+
+h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+mat-card-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+table {
+    width: 100%;
+    tr {
+        height: 40px;
+        th, td {
+            text-align: left;
+            width: 33%;
+        }
+        th {
+            font-size: 20px;
+        }
+    }
+}
+
+.guest-detail-header-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 20px;
+    height: 160px;
+
+    >img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        object-fit: cover;
+    }
+}
+
+
+
+.user-detail {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+mat-card {
+    position: relative;
+}
+
+.position-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

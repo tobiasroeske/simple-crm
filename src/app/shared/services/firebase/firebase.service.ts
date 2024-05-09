@@ -1,45 +1,94 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, doc, onSnapshot } from '@angular/fire/firestore';
-import { User } from '../../models/user.class';
-import { SingleUser } from '../../interfaces/singleUser.interface';
+import { Firestore, addDoc, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import { Guest } from '../../models/guest.class';
+import { SingleGuest } from '../../interfaces/singleGuest.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
   firestore = inject(Firestore)
-  unsubUsers;
-  userList: SingleUser[] = [];
+  unsubGuests;
+  unsubSingleGuestDetail: any;
+  guestList: SingleGuest[] = [];
+  singleGuest!: SingleGuest;
 
   constructor() {
-    this.unsubUsers = this.unsubUsersList();
+    this.unsubGuests = this.unsubGuestsList();
   }
 
   ngOnDestroy(): void {
-    this.unsubUsers();
+    this.unsubGuests();
+    this.unsubSingleGuestDetail();
   }
 
   async addUser(user: any) {
-    const docRef = await addDoc(this.getUsersRef(), user)
+    const docRef = await addDoc(this.getGuestsRef(), user)
       .catch(err => console.error(err));
   }
 
-  getUsersRef() {
+  getGuestsRef() {
     return collection(this.firestore, 'guests');
   }
 
-  unsubUsersList() {
-    return onSnapshot(this.getUsersRef(), list => {
-      this.userList = [];
+  getSingleGuestRef(guestId:string ) {
+    return doc(this.getGuestsRef(), guestId)
+  }
+
+  async getGuestDetail(id:string) {
+    const docRef = doc(this.getGuestsRef(), id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      this.singleGuest = this.setGuestObject(docSnap.data(), docSnap.id);
+      console.log('Single guest is: ',this.singleGuest);
+      
+    } else {
+      console.error("No such document!");
+    }
+  }
+
+  unsubGuestsList() {
+    return onSnapshot(this.getGuestsRef(), list => {
+      this.guestList = [];
       list.forEach(user => {
-        let singleUser: SingleUser = this.setUserObject(user.data(), user.id)
-        this.userList.push(singleUser);
+        let singleUser: SingleGuest = this.setGuestObject(user.data(), user.id)
+        this.guestList.push(singleUser);
       })
-      console.log(this.userList);
+      console.log(this.guestList);
     })
   }
 
-  setUserObject(obj: any, id: string) {
+  unsubSingleGuest(guestId:string) {
+    return onSnapshot(this.getSingleGuestRef(guestId), guest => {
+      this.singleGuest = this.getCleanJson(guest.data());
+    })
+  }
+
+  getCleanJson(obj: any) {
+    return {
+      firstName: obj.firstName, 
+      lastName: obj.lastName,
+      email: obj.email,
+      arrivalDate: obj.arrivalDate,
+      leavingDate: obj.leavingDate,
+      roomPreference: obj.roomPreference,
+      allergies: obj.allergies,
+      allergyType: obj.allergyType,
+      board: obj.board,
+      boardType: obj.boardType,
+      wetsuit: obj.wetsuit, 
+      wetsuitSize: obj.wetsuitSize,
+      transfer: obj.transfer, 
+      deposit: obj.deposit, 
+      street: obj.street, 
+      zipCode: obj.zipCode, 
+      city: obj.city 
+    }        
+    
+  }
+
+  setGuestObject(obj: any, id: string) {
     return {
       id: id || '',
       firstName: obj.firstName || '',
@@ -47,14 +96,18 @@ export class FirebaseService {
       email: obj.email || '',
       arrivalDate: obj.arrivalDate || '',
       leavingDate: obj.leavingDate || '',
-      roomPreference: obj.roomPreference || '',
-      allergies: obj.allergies || '',
-      board: obj.board || '',
-      transfer: obj.transfer || '',
-      deposit: obj.deposit || '',
-      street: obj.street || '',
-      zipCode: obj.zipCode || '',
-      city: obj.city || ''
+      roomPreference: obj.roomPreference || 'need to ask',
+      allergies: obj.allergies || 'need to ask',
+      allergyType: obj.allergyType || 'need to ask',
+      board: obj.board || 'need to ask',
+      boardType: obj.boardType || 'brings own board',
+      wetsuit: obj.wetsuit || 'need to ask',
+      wetsuitSize: obj.wetsuitSize || 'brings own suit',
+      transfer: obj.transfer || 'need to ask',
+      deposit: obj.deposit || 'need to ask',
+      street: obj.street || 'need to ask',
+      zipCode: obj.zipCode || 'need to ask',
+      city: obj.city || 'need to ask'
     };
   }
 

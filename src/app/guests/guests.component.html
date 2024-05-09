@@ -1,0 +1,26 @@
+<mat-card>
+    <mat-card-content>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Arrival Date</th>
+                <th>Leaving Date</th>
+            </tr>
+            @for (guest of firebaseService.guestList; track guest.id; let i = $index ) {
+                <tr routerLink="{{guest.id}}">
+                    <td>{{ guestService.capitalizeFirstLetter(guest.firstName)}} {{ guestService.capitalizeFirstLetter(guest.lastName) }}</td>
+                    <td>{{ guest.email }}</td>
+                    <td>{{ guestService.getRightDateFormat(guest.arrivalDate) }}</td>
+                    <td>{{ guestService.getRightDateFormat(guest.leavingDate) }}</td>
+                </tr>
+            }
+            
+        </table>
+    </mat-card-content>
+</mat-card>
+
+<button mat-fab color="primary" class="add-btn" matTooltip="Add user" [matTooltipPosition]="'above'"
+    (click)="openDialog()">
+    <mat-icon>add</mat-icon>
+</button>

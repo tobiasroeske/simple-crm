@@ -1,0 +1,148 @@
+<mat-card class="guest-detail-header">
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="position-top-right">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+        </button>
+    </mat-menu>
+    <mat-card-content class="guest-detail-header-content">
+        <img src="assets/img/1.webp" alt="">
+        <div class="user-detail">
+            <h2>{{ guestService.capitalizeFirstLetter(guest.firstName) }} {{
+                guestService.capitalizeFirstLetter(guest.lastName) }}</h2>
+            <span>{{ guest.email }}</span>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-32">
+    <button mat-icon-button [matMenuTriggerFor]="detailMenu" class="position-top-right">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #detailMenu="matMenu" class="edit-menu">
+        <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+        </button>
+    </mat-menu>
+    <mat-card-header>
+        <mat-card-title>Arrival & Departure Dates</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="info-container">
+            <table>
+                <tr>
+                    <th>Arriving on:</th>
+                    <th>Staying:</th>
+                    <th> Departing on:</th>
+                </tr>
+                <tr>
+                    <td>{{ guestService.getRightDateFormat(guest.arrivalDate) }}</td>
+                    <td>{{ guestService.calculateNumberOfDays(guest.arrivalDate, guest.leavingDate) }} days</td>
+                    <td>{{ guestService.getRightDateFormat(guest.leavingDate) }}</td>
+                </tr>
+            </table>
+
+            <!-- <div>
+                <h3>Arriving on:</h3>
+                <span>{{ guestService.getRightDateFormat(guest.arrivalDate) }}</span>
+            </div>
+            <div>
+                <h3>Staying: </h3>
+                <span>{{ guestService.calculateNumberOfDays(guest.arrivalDate, guest.leavingDate) }} days</span>
+            </div>
+            <div>
+                <h3>Departing on:</h3>
+                <span>{{ guestService.getRightDateFormat(guest.leavingDate) }}</span>
+            </div> -->
+
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-32">
+    <button mat-icon-button [matMenuTriggerFor]="guestInfoMenu" class="position-top-right">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #guestInfoMenu="matMenu" class="edit-menu">
+        <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+        </button>
+    </mat-menu>
+    <mat-card-header>
+        <mat-card-title>Guest Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="info-content">
+
+        <table>
+            <tr>
+                <th>Board</th>
+                <th>Wetsuit</th>
+                <th>Allergies</th>
+            </tr>
+            <tr>
+                @if (guest.board == 'Yes') {
+                <td>Brings own Board</td>
+                } @else {
+                <td>Needs: {{ guest.boardType }}</td>
+                }
+
+                @if (guest.wetsuit == 'Yes') {
+                <td>Brings own wetsuit</td>
+                } @else {
+                <td>Needs size: {{ guest.wetsuitSize }}</td>
+                }
+
+                @if (guest.allergies == 'No') {
+                <td>Has no allergies/special diets</td>
+                } @else {
+                <td>Allergy / Diet: {{ guest.allergyType }}</td>
+                }
+            </tr>
+            <tr></tr>
+            <tr>
+                <th>Transfer</th>
+                <th>Deposit</th>
+                <th>Room Preference</th>
+            </tr>
+            <tr>
+                <td>{{ guest.transfer }}</td>
+                <td>{{ guest.deposit }}</td>
+                <td>{{ guest.roomPreference }}</td>
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-32">
+    <button mat-icon-button [matMenuTriggerFor]="addressMenu" class="position-top-right">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #addressMenu="matMenu" class="edit-menu">
+        <button mat-menu-item (click)="editAddress()">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+        </button>
+    </mat-menu>
+    <mat-card-header>
+        <mat-card-title>Address</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <table>
+            <tr>
+                <th>Street + No</th>
+                <th>Zip Code</th>
+                <th> City</th>
+            </tr>
+            <tr>
+                <td>{{ guest.street }}</td>
+                <td>{{ guest.zipCode}}</td>
+                <td>{{ guest.city }}</td>
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>

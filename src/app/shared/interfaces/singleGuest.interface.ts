@@ -1,4 +1,4 @@
-export interface SingleUser {
+export interface SingleGuest {
     id?: string;
     firstName: string;
     lastName: string;
@@ -7,7 +7,11 @@ export interface SingleUser {
     leavingDate: number;
     roomPreference: "private" | "double" | "dorm";
     allergies: string;
-    board: boolean;
+    allergyType: string;
+    board: string;
+    boardType: string;
+    wetsuit: string;
+    wetsuitSize: string;
     transfer: string;
     deposit: boolean;
     street: string;

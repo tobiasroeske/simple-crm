@@ -1,4 +1,6 @@
-export class User {
+import { SingleGuest } from "../interfaces/singleGuest.interface";
+
+export class Guest implements SingleGuest{
     id?: string;
     firstName!: string;
     lastName!: string;
@@ -6,9 +8,12 @@ export class User {
     arrivalDate!: number;
     leavingDate!: number;
     roomPreference!: "private" | "double" | "dorm";
-    allergies!: string;
-    board = false;
-    wetsuit = false;
+    allergies: string;
+    allergyType!: string;
+    board!: string;
+    boardType!: string;
+    wetsuit: string;
+    wetsuitSize!: string;
     transfer!: string;
     deposit = false;
     street!: string;
@@ -23,8 +28,11 @@ export class User {
         this.leavingDate = obj ? obj.leavingDate : '';
         this.roomPreference = obj ? obj.roomPreference : '';
         this.allergies = obj ? obj.allergies : '';
+        this.allergyType = obj ? obj.allergyType : '';
         this.board = obj ? obj.board : '';
+        this.boardType = obj ? obj.boardType : '';
         this.wetsuit = obj ? obj.wetsuit : '';
+        this.wetsuitSize = obj ? obj.wetsuitSize : '';
         this.transfer = obj ? obj.transfer : '';
         this.deposit = obj ? obj.deposit : '';
         this.street = obj ? obj.street : '';
@@ -41,8 +49,11 @@ export class User {
             leavingDate: this.leavingDate,
             roomPreference: this.roomPreference,
             allergies: this.allergies,
+            allergyType: this.allergyType,
             board: this.board, 
+            boardType: this.boardType,
             wetsuit: this.wetsuit, 
+            wetsuitSize: this.wetsuitSize,
             transfer: this.transfer, 
             deposit: this.deposit, 
             street: this.street, 
@@ -50,4 +61,5 @@ export class User {
             city: this.city 
         }
     }
+
 }

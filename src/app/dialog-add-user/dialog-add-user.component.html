@@ -11,7 +11,7 @@
             <div class="input-container full-width pt-16">
                 <mat-form-field appearance="outline">
                     <mat-label>First name</mat-label>
-                    <input [disabled]="loading" [(ngModel)]="user.firstName" matInput placeholder="First name" required
+                    <input [disabled]="loading" [(ngModel)]="guest.firstName" matInput placeholder="First name" required
                         #firstName="ngModel" name="firstName" minlength="3">
                     @if (firstName.touched && !firstName.valid) {
                     <mat-hint color="alert">Please enter at least 3 letters</mat-hint>
@@ -21,7 +21,7 @@
 
                 <mat-form-field appearance="outline">
                     <mat-label>Last name</mat-label>
-                    <input [disabled]="loading" [(ngModel)]="user.lastName" matInput placeholder="Last name" required
+                    <input [disabled]="loading" [(ngModel)]="guest.lastName" matInput placeholder="Last name" required
                         #lastName="ngModel" name="lastName" minlength="3">
                     @if (lastName.touched && !lastName.valid) {
                     <mat-hint color="alert">Please enter at least 3 letters</mat-hint>
@@ -32,8 +32,8 @@
             <div>
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>Email</mat-label>
-                    <input [disabled]="loading" type="email" [(ngModel)]="user.email" matInput required #email="ngModel"
-                        name="email" placeholder="E-Mail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+                    <input [disabled]="loading" type="email" [(ngModel)]="guest.email" matInput required
+                        #email="ngModel" name="email" placeholder="E-Mail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
                     @if (email.touched && !email.valid) {
                     <mat-hint color="alert">Please enter valid email address</mat-hint>
                     }
@@ -65,42 +65,71 @@
             </div>
 
             <div class="input-container full-width pt-16">
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Board</mat-label>
+                        <mat-select [(ngModel)]="guest.board" name="board" #board>
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Board Type</mat-label>
+                        <input [disabled]="loading || board.value=='Yes'" [(ngModel)]="guest.boardType" matInput
+                            placeholder="Board type" #boardType="ngModel" name="boardType">
+                    </mat-form-field>
+
+                </div>
+
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Wetsuit</mat-label>
+                        <mat-select [(ngModel)]="guest.wetsuit" name="wetsuit" #wetsuit>
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Wetsuit size</mat-label>
+                        <input [disabled]="loading || wetsuit.value=='Yes'" [(ngModel)]="guest.wetsuitSize" matInput
+                            placeholder="Wetsuit Size" #wetsuitSize="ngModel" name="wetsuitSize">
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Allergies</mat-label>
+                        <mat-select [(ngModel)]="guest.allergies" name="allergies" #allergies>
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Type of allergy</mat-label>
+                        <input [disabled]="loading || allergies.value=='No'" [(ngModel)]="guest.allergyType" matInput
+                            placeholder="Allergy type" #allergyType="ngModel" name="allergyType">
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="input-container full-width pt-16">
+                
                 <mat-form-field appearance="outline">
                     <mat-label>Room Preference</mat-label>
-                    <mat-select [(ngModel)]="user.roomPreference" name="roomPreference" #roomPreference>
+                    <mat-select [(ngModel)]="guest.roomPreference" name="roomPreference" #roomPreference>
                         <mat-option value="private">Private room</mat-option>
                         <mat-option value="double">Double room</mat-option>
                         <mat-option value="dorm">Dorm room</mat-option>
                     </mat-select>
                 </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Board</mat-label>
-                    <mat-select [(ngModel)]="user.board" name="board" #board>
-                        <mat-option value=true>Yes</mat-option>
-                        <mat-option value=false>No</mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Wetsuit</mat-label>
-                    <mat-select [(ngModel)]="user.wetsuit" name="wetsuit" #wetsuit>
-                        <mat-option value=true>Yes</mat-option>
-                        <mat-option value=false>No</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="input-container full-width pt-16">
-                <mat-form-field appearance="outline">
-                    <mat-label>Allergies</mat-label>
-                    <input [disabled]="loading" [(ngModel)]="user.allergies" matInput placeholder="Allergies"
-                        #allergies="ngModel" name="allergies">
-                </mat-form-field>
-
+                
                 <mat-form-field appearance="outline">
                     <mat-label>Transfer</mat-label>
-                    <mat-select [(ngModel)]="user.wetsuit" name="wetsuit" #wetsuit>
+                    <mat-select [(ngModel)]="guest.transfer" name="wetsuit" #wetsuit>
                         <mat-option value="no transfer">No transfer</mat-option>
                         <mat-option value="santiago">Santiago</mat-option>
                         <mat-option value="coruna">Coruña</mat-option>
@@ -112,7 +141,7 @@
             <div>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Street + HouseNo</mat-label>
-                    <input [disabled]="loading" [(ngModel)]="user.street" matInput placeholder="Address"
+                    <input [disabled]="loading" [(ngModel)]="guest.street" matInput placeholder="Address"
                         #street="ngModel" name="street">
                 </mat-form-field>
             </div>
@@ -120,13 +149,13 @@
             <div class="input-container full-width">
                 <mat-form-field appearance="outline">
                     <mat-label>Zip code</mat-label>
-                    <input [disabled]="loading" [(ngModel)]="user.zipCode" matInput placeholder="Zipcode"
+                    <input [disabled]="loading" [(ngModel)]="guest.zipCode" matInput placeholder="Zipcode"
                         #zipCode="ngModel" type="number" name="zipCode" pattern="[0-9]{5}" inputmode="numeric">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>City</mat-label>
-                    <input [disabled]="loading" [(ngModel)]="user.city" matInput placeholder="City" #city="ngModel"
+                    <input [disabled]="loading" [(ngModel)]="guest.city" matInput placeholder="City" #city="ngModel"
                         name="city">
                 </mat-form-field>
             </div>

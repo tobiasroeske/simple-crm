@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { User } from '../shared/models/user.class';
+import { Guest } from '../shared/models/guest.class';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../shared/services/firebase/firebase.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -40,23 +40,24 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './dialog-add-user.component.scss'
 })
 export class DialogAddUserComponent {
-  user = new User();
+  guest = new Guest();
   dateOfArrival!: Date;
   dateOfLeaving!: Date;
   firebaseService = inject(FirebaseService);
   dialogRef = inject(MatDialogRef<DialogAddUserComponent>)
   loading: boolean = false;
 
-
-
   async saveUser() {
     this.loading = true;
-
-    this.user.arrivalDate = this.dateOfArrival.getTime();
-    this.user.leavingDate = this.dateOfLeaving.getTime();
-    await this.firebaseService.addUser(this.user.toJson())
+    
+    this.guest.arrivalDate = this.dateOfArrival.getTime();
+    this.guest.leavingDate = this.dateOfLeaving.getTime();
+    console.log('Guest before saving: ', this.guest);
+    await this.firebaseService.addUser(this.firebaseService.getCleanJson(this.guest))
       .then(result => {
         this.loading = false
+        console.log('Guest after saving: ', this.firebaseService.getCleanJson(this.guest));
+        
       })
   }
 
