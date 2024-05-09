@@ -10,3 +10,29 @@
     gap: 16px;
 }
 
+input[type="submit"] {
+    background: transparent;
+    color: white;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+mat-hint {
+    color: rgb(244,67,54);
+}
+
+mat-form-field {
+  width: 100%;
+}
