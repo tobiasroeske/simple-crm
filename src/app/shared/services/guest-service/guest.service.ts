@@ -1,10 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { FirebaseService } from '../firebase/firebase.service';
+import { ActivatedRoute } from '@angular/router';
+import { SingleGuest } from '../../interfaces/singleGuest.interface';
+import { Guest } from '../../models/guest.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuestService {
-
+  firebaseService = inject(FirebaseService);
+  route = inject(ActivatedRoute);
+  guest!: SingleGuest;
   constructor() { }
 
   getRightDateFormat(timestamp: number) {

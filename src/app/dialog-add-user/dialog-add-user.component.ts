@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../shared/services/firebase/firebase.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { updateDoc } from '@angular/fire/firestore';
 
 
 
@@ -49,15 +50,12 @@ export class DialogAddUserComponent {
 
   async saveUser() {
     this.loading = true;
-    
     this.guest.arrivalDate = this.dateOfArrival.getTime();
     this.guest.leavingDate = this.dateOfLeaving.getTime();
     console.log('Guest before saving: ', this.guest);
-    await this.firebaseService.addUser(this.firebaseService.getCleanJson(this.guest))
+    await this.firebaseService.addUser(this.guest)
       .then(result => {
         this.loading = false
-        console.log('Guest after saving: ', this.firebaseService.getCleanJson(this.guest));
-        
       })
   }
 

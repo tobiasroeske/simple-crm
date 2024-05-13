@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { Guest } from '../../models/guest.class';
 import { SingleGuest } from '../../interfaces/singleGuest.interface';
 
@@ -12,6 +12,7 @@ export class FirebaseService {
   unsubSingleGuestDetail: any;
   guestList: SingleGuest[] = [];
   singleGuest!: SingleGuest;
+  guestId!: string;
 
   constructor() {
     this.unsubGuests = this.unsubGuestsList();
@@ -22,9 +23,22 @@ export class FirebaseService {
     this.unsubSingleGuestDetail();
   }
 
-  async addUser(user: any) {
-    const docRef = await addDoc(this.getGuestsRef(), user)
+  async addUser(guest: any) {
+    const docRef = await addDoc(this.getGuestsRef(), this.getCleanJson(guest))
+      .catch(err => console.error(err))
+      .then((docRef) => {
+        if (docRef?.id) {
+          this.guestId = docRef?.id;
+          updateDoc(this.getSingleGuestRef(this.guestId), {id: this.guestId} )
+        }
+      })
+  }
+
+  async updateGuest(guest:SingleGuest) {
+    if (guest.id) {
+      await updateDoc(this.getSingleGuestRef(guest.id), this.getCleanJson(guest))
       .catch(err => console.error(err));
+    }
   }
 
   getGuestsRef() {
@@ -41,8 +55,6 @@ export class FirebaseService {
 
     if (docSnap.exists()) {
       this.singleGuest = this.setGuestObject(docSnap.data(), docSnap.id);
-      console.log('Single guest is: ',this.singleGuest);
-      
     } else {
       console.error("No such document!");
     }
@@ -55,18 +67,21 @@ export class FirebaseService {
         let singleUser: SingleGuest = this.setGuestObject(user.data(), user.id)
         this.guestList.push(singleUser);
       })
-      console.log(this.guestList);
     })
   }
 
   unsubSingleGuest(guestId:string) {
-    return onSnapshot(this.getSingleGuestRef(guestId), guest => {
+    let unsub =  onSnapshot(this.getSingleGuestRef(guestId), guest => {
       this.singleGuest = this.getCleanJson(guest.data());
-    })
+      console.log('singleuser: ',this.singleGuest);
+      
+    });
+    this.unsubSingleGuestDetail = unsub;
   }
 
   getCleanJson(obj: any) {
     return {
+      id: obj.id ? obj.id : '',
       firstName: obj.firstName, 
       lastName: obj.lastName,
       email: obj.email,
@@ -110,6 +125,4 @@ export class FirebaseService {
       city: obj.city || 'need to ask'
     };
   }
-
-
 }

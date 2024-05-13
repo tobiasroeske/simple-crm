@@ -3,7 +3,7 @@
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="editGuestProfile()">
             <mat-icon>edit</mat-icon>
             <span>Edit</span>
         </button>
@@ -11,9 +11,8 @@
     <mat-card-content class="guest-detail-header-content">
         <img src="assets/img/1.webp" alt="">
         <div class="user-detail">
-            <h2>{{ guestService.capitalizeFirstLetter(guest.firstName) }} {{
-                guestService.capitalizeFirstLetter(guest.lastName) }}</h2>
-            <span>{{ guest.email }}</span>
+            <h2>{{ getGuestDetail().firstName }} {{ getGuestDetail().lastName }}</h2>
+            <span>{{ getGuestDetail().email }}</span>
         </div>
     </mat-card-content>
 </mat-card>
@@ -40,9 +39,9 @@
                     <th> Departing on:</th>
                 </tr>
                 <tr>
-                    <td>{{ guestService.getRightDateFormat(guest.arrivalDate) }}</td>
-                    <td>{{ guestService.calculateNumberOfDays(guest.arrivalDate, guest.leavingDate) }} days</td>
-                    <td>{{ guestService.getRightDateFormat(guest.leavingDate) }}</td>
+                    <td>{{ guestService.getRightDateFormat(getGuestDetail().arrivalDate) }}</td>
+                    <td>{{ guestService.calculateNumberOfDays(getGuestDetail().arrivalDate, getGuestDetail().leavingDate) }} days</td>
+                    <td>{{ guestService.getRightDateFormat(getGuestDetail().leavingDate) }}</td>
                 </tr>
             </table>
 
@@ -85,22 +84,22 @@
                 <th>Allergies</th>
             </tr>
             <tr>
-                @if (guest.board == 'Yes') {
+                @if (getGuestDetail().board == 'Yes') {
                 <td>Brings own Board</td>
                 } @else {
-                <td>Needs: {{ guest.boardType }}</td>
+                <td>Needs: {{ getGuestDetail().boardType }}</td>
                 }
 
-                @if (guest.wetsuit == 'Yes') {
+                @if (getGuestDetail().wetsuit == 'Yes') {
                 <td>Brings own wetsuit</td>
                 } @else {
-                <td>Needs size: {{ guest.wetsuitSize }}</td>
+                <td>Needs size: {{ getGuestDetail().wetsuitSize }}</td>
                 }
 
-                @if (guest.allergies == 'No') {
+                @if (getGuestDetail().allergies == 'No') {
                 <td>Has no allergies/special diets</td>
                 } @else {
-                <td>Allergy / Diet: {{ guest.allergyType }}</td>
+                <td>Allergy / Diet: {{ getGuestDetail().allergyType }}</td>
                 }
             </tr>
             <tr></tr>
@@ -110,9 +109,9 @@
                 <th>Room Preference</th>
             </tr>
             <tr>
-                <td>{{ guest.transfer }}</td>
-                <td>{{ guest.deposit }}</td>
-                <td>{{ guest.roomPreference }}</td>
+                <td>{{ getGuestDetail().transfer }}</td>
+                <td>{{ getGuestDetail().deposit }}</td>
+                <td>{{ getGuestDetail().roomPreference }}</td>
             </tr>
         </table>
     </mat-card-content>
@@ -123,7 +122,7 @@
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #addressMenu="matMenu" class="edit-menu">
-        <button mat-menu-item (click)="editAddress()">
+        <button mat-menu-item>
             <mat-icon>edit</mat-icon>
             <span>Edit</span>
         </button>
@@ -139,9 +138,9 @@
                 <th> City</th>
             </tr>
             <tr>
-                <td>{{ guest.street }}</td>
-                <td>{{ guest.zipCode}}</td>
-                <td>{{ guest.city }}</td>
+                <td>{{ getGuestDetail().street }}</td>
+                <td>{{ getGuestDetail().zipCode}}</td>
+                <td>{{ getGuestDetail().city }}</td>
             </tr>
         </table>
     </mat-card-content>
