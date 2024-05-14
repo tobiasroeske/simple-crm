@@ -1,26 +1,35 @@
-<mat-drawer-container class="mat-drawer-container" autosize>
-  <mat-drawer [opened]="true" #drawer class="sidenav" mode="side">
-    <div class="logo-container">PLATZ FÜR LOGO</div>
-    
-    <ul class="menu-items">
-      <li routerLink="dashboard"><mat-icon>fact_check</mat-icon> Dashboard</li>
-      <li routerLink="guests"><mat-icon>person</mat-icon>Guests</li>
-    </ul>
-  </mat-drawer>
-
-  <div class="example-sidenav-content">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <button mat-icon-button class="example-icon" (click)="drawer.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <span>Simple CRM</span>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <div class="router-container">
-      <router-outlet></router-outlet>
+@if (!authService.currentLoggedinUser.loggedIn) {
+  <router-outlet></router-outlet>
+} @else {
+  <mat-drawer-container class="mat-drawer-container" autosize>
+    <mat-drawer [opened]="true" #drawer class="sidenav" mode="side">
+      <div class="logo-container">PLATZ FÜR LOGO</div>
+      
+      <ul class="menu-items">
+        <li routerLink="dashboard"><mat-icon>fact_check</mat-icon> Dashboard</li>
+        <li routerLink="guests"><mat-icon>person</mat-icon>Guests</li>
+        <li (click)="logout()">Logout</li>
+      </ul>
+    </mat-drawer>
+  
+    <div class="example-sidenav-content">
+      <mat-toolbar>
+        <mat-toolbar-row>
+          <button mat-icon-button class="example-icon" (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span>Simple CRM</span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <div class="router-container">
+        <router-outlet></router-outlet>
+      </div>
+      
     </div>
-    
-  </div>
+  
+  </mat-drawer-container>
+}
 
-</mat-drawer-container>
+
+
+
